@@ -91,3 +91,7 @@ VBoxManage showvminfo "Wazuh-Lab" --machinereadable | grep -F 'ubuntu-24.04.5-li
 ```
 
 **Prüfergebnis:** `SATA-1-0` verweist auf die geprüfte Ubuntu-Server-ISO. Der virtuelle Datenträger an Port 0 bleibt das Installationsziel. Der Eintrag bestätigt die Zuordnung; der Start vom Installationsmedium wird separat geprüft.
+
+## 09.11.2026 – Erster Start vom Installationsmedium
+
+Die VM `Wazuh-Lab` lief im VirtualBox-Fenster. Das GRUB-Menü der Ubuntu-Server-ISO zeigte den markierten Eintrag `Try or Install Ubuntu Server`. Damit ist der Start vom Installationsmedium bestätigt. Eine Installation auf die virtuelle Festplatte ist zu diesem Zeitpunkt noch nicht nachgewiesen.
