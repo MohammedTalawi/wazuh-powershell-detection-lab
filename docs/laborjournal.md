@@ -164,3 +164,17 @@ systemctl is-active wazuh-manager wazuh-indexer wazuh-dashboard filebeat
 Das Dashboard konnte vom Ubuntu-Host unter `https://192.168.56.10` geöffnet und nach Anmeldung angezeigt werden. Auf der Übersichtsseite stand **`This instance has no agents registered`**. Angezeigte lokale Alerts sind noch kein Nachweis für erkannte Windows-/PowerShell-Ereignisse.
 
 **Offener nächster Meilenstein:** Windows-VM einrichten, Sysmon und PowerShell-Protokollierung vorbereiten, Wazuh-Agent anbinden und die vollständige Ereigniskette mit einem reproduzierbaren Testfall nachweisen. Erst anschließend werden Regelsatz A/B und Messungen angegangen. Zugangsdaten, Zertifikatsschlüssel und Installationsarchive mit Secrets werden nicht ins Repository übernommen.
+
+## 09.11.2026 – Entscheidung zur Netzisolation und zum Fernzugriff
+
+**Entscheidung:** Der Wazuh-Laborserver bleibt vorerst **nur lokal** erreichbar. Es wird aktuell **kein externer Fernzugriff** (z. B. über Tailscale/VPN oder Portweiterleitungen am Router) eingerichtet. Das ist eine bewusste Eingrenzung der Angriffsfläche für die Entwicklungs- und Testphase; Fernzugriff ist keine Voraussetzung für den geplanten Vergleich der Erkennungsregeln.
+
+**Geltende Architektur:**
+
+- `enp0s3` (NAT, `10.0.2.15/24`) dient ausgehenden Verbindungen, z. B. für Paketupdates; NAT richtet keine eingehenden Internetverbindungen automatisch ein.
+- `enp0s8` (Host-only, statisch `192.168.56.10/24`) dient der Kommunikation mit dem Ubuntu-Host (`192.168.56.1`) und späteren VMs im selben Host-only-Netz.
+- SSH (Port `22`) und die Dashboard-Oberfläche (HTTPS) wurden vom Ubuntu-Host innerhalb dieser Laborverbindung erfolgreich erreicht. Eine Erreichbarkeit von außerhalb wurde nicht eingerichtet oder getestet. Host-only bedeutet nicht automatisch Zugriff durch andere Geräte im Heim-WLAN.
+
+**Sicherheitsgrenzen:** Eine lokale Host-only-Verbindung macht Dienste nicht grundsätzlich immun gegen Angriffe: Berechtigte oder kompromittierte Geräte innerhalb des Labor-/Host-Netzes könnten zugängliche Dienste angreifen. SSH-Schlüssel statt Passwortauthentifizierung, gezielte Firewall-Regeln und weitere Härtung bleiben geplante Schutzmaßnahmen, nicht bereits umgesetzte Konfiguration.
+
+**Voraussetzung für späteren Fernzugriff:** Falls notwendig, wird eine authentifizierte VPN-Lösung mit eingeschränkten Zugriffsregeln separat geplant, getestet und dokumentiert; SSH- oder Dashboard-Ports werden nicht ohne konkrete Notwendigkeit öffentlich freigegeben.
