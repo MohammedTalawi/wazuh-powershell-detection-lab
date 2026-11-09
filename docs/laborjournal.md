@@ -75,4 +75,10 @@ Für den Gast ist Ubuntu Server 24.04.5 LTS (amd64) vorgesehen. Die Suche im Hom
 wget -c -P "$HOME/ISO" "https://releases.ubuntu.com/24.04/ubuntu-24.04.5-live-server-amd64.iso"
 ```
 
-`wget` meldete 100 % und **4.080.486.400 von 4.080.486.400 Bytes** gespeichert. Damit ist der Download abgeschlossen. Der Abgleich mit der [SHA-256-Prüfsumme von Ubuntu](https://releases.ubuntu.com/24.04/SHA256SUMS) steht noch aus.
+`wget` meldete 100 % und **4.080.486.400 von 4.080.486.400 Bytes** gespeichert. Damit ist der Download abgeschlossen. Anschließend wurde die lokale ISO-Datei geprüft:
+
+```bash
+sha256sum "$HOME/ISO/ubuntu-24.04.5-live-server-amd64.iso"
+```
+
+Die berechnete Prüfsumme `97f3d7ffb032c3eb3b23d2c8be9cc76e60c2c1f2c0146ba5ba9fe01cafae0fd8` stimmt mit dem Eintrag für diese Server-ISO in [Ubuntus SHA256SUMS](https://releases.ubuntu.com/24.04/SHA256SUMS) überein.
