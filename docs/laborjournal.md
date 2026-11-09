@@ -82,3 +82,12 @@ sha256sum "$HOME/ISO/ubuntu-24.04.5-live-server-amd64.iso"
 ```
 
 Die berechnete Prüfsumme `97f3d7ffb032c3eb3b23d2c8be9cc76e60c2c1f2c0146ba5ba9fe01cafae0fd8` stimmt mit dem Eintrag für diese Server-ISO in [Ubuntus SHA256SUMS](https://releases.ubuntu.com/24.04/SHA256SUMS) überein.
+
+## 09.11.2026 – Installationsmedium als DVD eingebunden
+
+```bash
+VBoxManage storageattach "Wazuh-Lab" --storagectl "SATA" --port 1 --device 0 --type dvddrive --medium "$HOME/ISO/ubuntu-24.04.5-live-server-amd64.iso"
+VBoxManage showvminfo "Wazuh-Lab" --machinereadable | grep -F 'ubuntu-24.04.5-live-server-amd64.iso'
+```
+
+**Prüfergebnis:** `SATA-1-0` verweist auf die geprüfte Ubuntu-Server-ISO. Der virtuelle Datenträger an Port 0 bleibt das Installationsziel. Der Eintrag bestätigt die Zuordnung; der Start vom Installationsmedium wird separat geprüft.
