@@ -101,3 +101,66 @@ Die VM `Wazuh-Lab` lief im VirtualBox-Fenster. Das GRUB-Menü der Ubuntu-Server-
 Im Ubuntu-Server-Installer erhielt die Schnittstelle `enp0s3` per DHCP die IPv4-Adresse `10.0.2.15/24`. Auf der folgenden Mirror-Seite bestand `http://de.archive.ubuntu.com/ubuntu` den Verbindungstest; der Installer rief die Release-Metadaten für `noble`, `noble-updates` und `noble-backports` ab.
 
 Damit ist ausgehender Zugriff auf diesen Ubuntu-Paketserver nachgewiesen. Die Erreichbarkeit der VM vom separaten Windows-System und vom Host-Browser ist damit noch nicht geprüft. Die Netzwerkverbindung für den späteren Wazuh-Agenten wird nach der Betriebssysteminstallation eingerichtet und getestet.
+
+## 09.11.2026 – Ubuntu Server installiert und per SSH erreichbar
+
+Ubuntu Server **24.04.5 LTS** wurde auf der virtuellen Festplatte der VM `Wazuh-Lab` installiert. Der Installer meldete `Installation complete!`; `openssh-server` wurde im Installationsablauf installiert. Nach dem Neustart war die Anmeldung als normaler Benutzer am Hostnamen `wazuh-manager` möglich. Die Serverkonsole zeigte die IPv4-Adresse `10.0.2.15` für `enp0s3` (VirtualBox-NAT).
+
+Das System wurde anschließend über `sudo apt update` und `sudo apt upgrade -y` aktualisiert. Der Upgrade-Prozess kehrte ohne sichtbare Fehler zum Prompt zurück. Ein Upgrade der Ubuntu-Hauptversion wurde nicht durchgeführt.
+
+## 09.11.2026 – Host-only-Netzwerk und statische Serveradresse
+
+Für die Laborverbindung wurde auf dem Ubuntu-Host ein VirtualBox-Host-only-Netzwerk mit der Schnittstelle `vboxnet0` eingerichtet. Die VM verwendet **Adapter 1: NAT** für ausgehende Verbindungen und **Adapter 2: Host-only (`vboxnet0`)** für die Kommunikation mit Host und späterem Windows-Gast. Der Ubuntu-Host hat auf dieser Laborverbindung `192.168.56.1/24`.
+
+Der VirtualBox-DHCP-Dienst für dieses Host-only-Netzwerk war aktiviert mit `192.168.56.100` als DHCP-Serveradresse und dem Vergabebereich `192.168.56.101` bis `192.168.56.254`. Zunächst erhielt `enp0s8` per DHCP `192.168.56.101/24`. Anschließend wurde außerhalb des Vergabebereichs die statische Adresse **`192.168.56.10/24`** für den Wazuh-Server konfiguriert. Die Adresse ist eine laborspezifische Beispielkonfiguration und muss in einer anderen Umgebung gegebenenfalls angepasst werden.
+
+Die Konfiguration wurde in `/etc/netplan/99-wazuh-hostonly.yaml` hinterlegt:
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    enp0s8:
+      dhcp4: false
+      addresses:
+        - 192.168.56.10/24
+```
+
+Die vorhandene NAT-Konfiguration für `enp0s3` (`dhcp4: true`) blieb erhalten. Nach `sudo netplan generate` und `sudo netplan try` wurde die Konfiguration bestätigt (`Configuration accepted.`). `ip -br a` zeigte `enp0s3` als `UP` mit `10.0.2.15/24` und `enp0s8` als `UP` mit `192.168.56.10/24`.
+
+**SSH-Nachweis:** Vom Ubuntu-Host gelang die Verbindung mit `ssh mohammed@192.168.56.10`. `echo "$SSH_CONNECTION"` zeigte `192.168.56.1 47366 192.168.56.10 22`. Port `47366` ist ein temporärer Clientport, `22` der SSH-Port des Servers.
+
+## 09.11.2026 – Ressourcenprüfung und Sicherungspunkt
+
+Im Gast wurden die Ressourcen wie folgt geprüft:
+
+```bash
+nproc
+free -h
+df -h /
+```
+
+**Beobachtete Werte:** 4 vCPU; ca. 7,8 GiB RAM; 4,0 GiB Swap; Root-Dateisystem ca. 98 GB groß, davon ca. 87 GB frei (zum Messzeitpunkt).
+
+Vor der Wazuh-Installation wurde in VirtualBox ein Snapshot angelegt, der in der VM-Titelleiste als `Ubuntu-Clean-Before-Wazuh-01` angezeigt wurde. Dieser Sicherungspunkt dokumentiert den Ausgangszustand vor der Installation; spätere Änderungen erfolgen im aktuellen VM-Zustand.
+
+## 09.11.2026 – Wazuh All-in-One installiert und geprüft
+
+Der Wazuh-Installationsassistent wurde vom Wazuh-Paketserver (Pfad `4.14`) heruntergeladen und als All-in-One-Installation ausgeführt:
+
+```bash
+curl -fsSLO https://packages.wazuh.com/4.14/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a
+```
+
+Der Assistent meldete am **09.11.2026 um 19:26:55**: `INFO: Installation finished.` Die vier Dienste wurden anschließend mit folgendem Befehl geprüft:
+
+```bash
+systemctl is-active wazuh-manager wazuh-indexer wazuh-dashboard filebeat
+```
+
+**Ergebnis:** Alle vier Dienste meldeten `active` (vom Benutzer bestätigt). Die genaue installierte Paketversion wurde noch nicht gesondert ausgelesen; der Pfad `4.14` bezeichnet den Download-Zweig des Installationsskripts.
+
+Das Dashboard konnte vom Ubuntu-Host unter `https://192.168.56.10` geöffnet und nach Anmeldung angezeigt werden. Auf der Übersichtsseite stand **`This instance has no agents registered`**. Angezeigte lokale Alerts sind noch kein Nachweis für erkannte Windows-/PowerShell-Ereignisse.
+
+**Offener nächster Meilenstein:** Windows-VM einrichten, Sysmon und PowerShell-Protokollierung vorbereiten, Wazuh-Agent anbinden und die vollständige Ereigniskette mit einem reproduzierbaren Testfall nachweisen. Erst anschließend werden Regelsatz A/B und Messungen angegangen. Zugangsdaten, Zertifikatsschlüssel und Installationsarchive mit Secrets werden nicht ins Repository übernommen.
