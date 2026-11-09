@@ -4,7 +4,7 @@ Wie verändert sich die Erkennung, wenn Wazuh zusätzlich zu seinen Standardrege
 
 ## Stand: Laboraufbau
 
-Der VirtualBox-Bestand auf dem Ubuntu-Host wurde geprüft. Der erste Eintrag im [Laborjournal](docs/laborjournal.md) enthält den Befehl, die Beobachtung und die daraus abgeleitete Entscheidung. Messwerte liegen noch nicht vor.
+Auf dem Ubuntu-Host ist die eigene VirtualBox-VM `Wazuh-Lab` registriert. Das [Laborjournal](docs/laborjournal.md) dokumentiert die Bestandsprüfung und den Befehl zum Anlegen der VM. Die Installation von Ubuntu Server und Wazuh steht noch aus.
 
 ## Geplanter Vergleich
 
