@@ -95,3 +95,9 @@ VBoxManage showvminfo "Wazuh-Lab" --machinereadable | grep -F 'ubuntu-24.04.5-li
 ## 09.11.2026 – Erster Start vom Installationsmedium
 
 Die VM `Wazuh-Lab` lief im VirtualBox-Fenster. Das GRUB-Menü der Ubuntu-Server-ISO zeigte den markierten Eintrag `Try or Install Ubuntu Server`. Damit ist der Start vom Installationsmedium bestätigt. Eine Installation auf die virtuelle Festplatte ist zu diesem Zeitpunkt noch nicht nachgewiesen.
+
+## 09.11.2026 – Netzwerkzugriff im Installer nachgewiesen
+
+Im Ubuntu-Server-Installer erhielt die Schnittstelle `enp0s3` per DHCP die IPv4-Adresse `10.0.2.15/24`. Auf der folgenden Mirror-Seite bestand `http://de.archive.ubuntu.com/ubuntu` den Verbindungstest; der Installer rief die Release-Metadaten für `noble`, `noble-updates` und `noble-backports` ab.
+
+Damit ist ausgehender Zugriff auf diesen Ubuntu-Paketserver nachgewiesen. Die Erreichbarkeit der VM vom separaten Windows-System und vom Host-Browser ist damit noch nicht geprüft. Die Netzwerkverbindung für den späteren Wazuh-Agenten wird nach der Betriebssysteminstallation eingerichtet und getestet.
