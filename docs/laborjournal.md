@@ -66,3 +66,13 @@ VBoxManage showvminfo "Wazuh-Lab" --machinereadable | grep -F 'Wazuh-Lab.vdi'
 ```
 
 **Prüfergebnis:** In der gespeicherten VM-Konfiguration verweist `SATA-0-0` auf `Wazuh-Lab.vdi`. Die Festplatte ist damit am SATA-Controller auf Port 0 als Gerät 0 angeschlossen. Ein Gastbetriebssystem wurde in diesem Schritt noch nicht installiert.
+
+## 09.11.2026 – Installationsmedium heruntergeladen
+
+Für den Gast ist Ubuntu Server 24.04.5 LTS (amd64) vorgesehen. Die Suche im Home-Verzeichnis ergab keinen Treffer für das erwartete ISO-Dateinamensmuster. Anschließend wurde das Installationsmedium von Ubuntu heruntergeladen:
+
+```bash
+wget -c -P "$HOME/ISO" "https://releases.ubuntu.com/24.04/ubuntu-24.04.5-live-server-amd64.iso"
+```
+
+`wget` meldete 100 % und **4.080.486.400 von 4.080.486.400 Bytes** gespeichert. Damit ist der Download abgeschlossen. Der Abgleich mit der [SHA-256-Prüfsumme von Ubuntu](https://releases.ubuntu.com/24.04/SHA256SUMS) steht noch aus.
