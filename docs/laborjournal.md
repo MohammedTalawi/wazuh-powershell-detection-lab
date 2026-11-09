@@ -23,3 +23,19 @@ VBoxManage createvm --name "Wazuh-Lab" --ostype Ubuntu_64 --register
 **Ergebnis:** VirtualBox bestätigte: `Virtual machine 'Wazuh-Lab' is created and registered.` Damit ist die VM für den geplanten Wazuh-Server angelegt. `Ubuntu_64` bezeichnet den gewählten Gasttyp; Ubuntu Server und Wazuh sind noch nicht installiert.
 
 **Nächster Schritt:** 4 virtuelle CPUs und 8192 MB Arbeitsspeicher zuweisen und die VM-Konfiguration prüfen.
+
+## 09.11.2026 – CPU und Arbeitsspeicher zugewiesen
+
+```bash
+VBoxManage modifyvm "Wazuh-Lab" --cpus 4 --memory 8192
+VBoxManage showvminfo "Wazuh-Lab" --machinereadable | grep -E '^(cpus|memory)='
+```
+
+Ausgabe der Konfigurationsprüfung:
+
+```text
+memory=8192
+cpus=4
+```
+
+Damit sind für die VM 8 GiB Arbeitsspeicher und vier virtuelle CPUs konfiguriert. Die Prüfung bestätigt die gespeicherten Einstellungen; eine Leistungsmessung wurde nicht durchgeführt.
