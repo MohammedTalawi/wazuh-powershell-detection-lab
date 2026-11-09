@@ -49,3 +49,11 @@ VBoxManage createmedium disk \
 ```
 
 VirtualBox meldete `Medium created.` Die VDI-Datei wächst mit der Nutzung bis zur virtuellen Kapazität von 100 GiB. Sie ist für Ubuntu Server und die späteren Wazuh-Daten vorgesehen. Der Befehl erstellt das Medium; der Anschluss an die VM steht noch aus.
+
+## 09.11.2026 – SATA-Controller für die Labor-VM
+
+```bash
+VBoxManage storagectl "Wazuh-Lab" --name "SATA" --add sata --controller IntelAhci
+```
+
+Die Ausführung wurde bestätigt. Der Controller stellt die virtuellen Anschlüsse für die Speichermedien bereit. Die Zuordnung der VDI-Datei zu einem Anschluss wird im nächsten Schritt vorgenommen und geprüft.
