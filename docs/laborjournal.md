@@ -39,3 +39,13 @@ cpus=4
 ```
 
 Damit sind für die VM 8 GiB Arbeitsspeicher und vier virtuelle CPUs konfiguriert. Die Prüfung bestätigt die gespeicherten Einstellungen; eine Leistungsmessung wurde nicht durchgeführt.
+
+## 09.11.2026 – Virtuelle Festplatte erstellt
+
+```bash
+VBoxManage createmedium disk \
+  --filename "$HOME/VirtualBox VMs/Wazuh-Lab/Wazuh-Lab.vdi" \
+  --size 102400 --format VDI --variant Standard
+```
+
+VirtualBox meldete `Medium created.` Die VDI-Datei wächst mit der Nutzung bis zur virtuellen Kapazität von 100 GiB. Sie ist für Ubuntu Server und die späteren Wazuh-Daten vorgesehen. Der Befehl erstellt das Medium; der Anschluss an die VM steht noch aus.
