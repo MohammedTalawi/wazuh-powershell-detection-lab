@@ -57,3 +57,12 @@ VBoxManage storagectl "Wazuh-Lab" --name "SATA" --add sata --controller IntelAhc
 ```
 
 Die Ausführung wurde bestätigt. Der Controller stellt die virtuellen Anschlüsse für die Speichermedien bereit. Die Zuordnung der VDI-Datei zu einem Anschluss wird im nächsten Schritt vorgenommen und geprüft.
+
+## 09.11.2026 – Anschluss der virtuellen Festplatte geprüft
+
+```bash
+VBoxManage storageattach "Wazuh-Lab" --storagectl "SATA" --port 0 --device 0 --type hdd --medium "$HOME/VirtualBox VMs/Wazuh-Lab/Wazuh-Lab.vdi"
+VBoxManage showvminfo "Wazuh-Lab" --machinereadable | grep -F 'Wazuh-Lab.vdi'
+```
+
+**Prüfergebnis:** In der gespeicherten VM-Konfiguration verweist `SATA-0-0` auf `Wazuh-Lab.vdi`. Die Festplatte ist damit am SATA-Controller auf Port 0 als Gerät 0 angeschlossen. Ein Gastbetriebssystem wurde in diesem Schritt noch nicht installiert.
