@@ -6,6 +6,8 @@ Wie verändert sich die Erkennung, wenn Wazuh zusätzlich zu seinen Standardrege
 
 Die VirtualBox-VM `Wazuh-Lab` läuft mit **Ubuntu Server 24.04.5 LTS**. Wazuh Manager, Indexer, Dashboard und Filebeat wurden installiert; alle vier Dienste wurden als `active` geprüft. Das Dashboard ist vom Ubuntu-Host über die isolierte Host-only-Verbindung erreichbar (`https://192.168.56.10`; laborspezifische Adresse).
 
+**Zugriffsentscheidung:** Das Labor bleibt vorerst lokal. Die Host-only-Adresse `192.168.56.10` ist für den Ubuntu-Host und VMs im selben virtuellen Netz vorgesehen; es ist kein Fernzugriff per VPN oder Router-Portweiterleitung eingerichtet. Der Server kann über den separaten NAT-Adapter weiterhin ausgehende Internetverbindungen nutzen. Siehe [Laborjournal](docs/laborjournal.md) für Sicherheitsgrenzen und Folgeaufgaben.
+
 **Noch nicht umgesetzt:** Windows-Testsystem, Sysmon, Wazuh-Agent, Nachweis des Windows-Ereigniswegs und Regelsatzvergleich. Bei der ersten Dashboard-Prüfung waren noch keine Agents registriert. Die Einrichtung und Prüfbelege sind im [Laborjournal](docs/laborjournal.md) dokumentiert.
 
 ## Geplanter Vergleich
