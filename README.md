@@ -2,9 +2,11 @@
 
 Wie verändert sich die Erkennung, wenn Wazuh zusätzlich zu seinen Standardregeln den Kontext eines PowerShell-Aufrufs berücksichtigt? Ein Beispiel aus dem geplanten Testkatalog sind kodierte Aufrufe: Sie kommen sowohl in legitimen Administrationsaufgaben als auch in verdächtigen Szenarien vor. Deshalb soll geprüft werden, was sich aus Befehlszeile, Elternprozess und Skriptinhalt ableiten lässt.
 
-## Stand: Laboraufbau
+## Stand: Wazuh-Server eingerichtet (09.11.2026)
 
-Auf dem Ubuntu-Host ist die eigene VirtualBox-VM `Wazuh-Lab` registriert. Das [Laborjournal](docs/laborjournal.md) dokumentiert die Bestandsprüfung und den Befehl zum Anlegen der VM. Die Installation von Ubuntu Server und Wazuh steht noch aus.
+Die VirtualBox-VM `Wazuh-Lab` läuft mit **Ubuntu Server 24.04.5 LTS**. Wazuh Manager, Indexer, Dashboard und Filebeat wurden installiert; alle vier Dienste wurden als `active` geprüft. Das Dashboard ist vom Ubuntu-Host über die isolierte Host-only-Verbindung erreichbar (`https://192.168.56.10`; laborspezifische Adresse).
+
+**Noch nicht umgesetzt:** Windows-Testsystem, Sysmon, Wazuh-Agent, Nachweis des Windows-Ereigniswegs und Regelsatzvergleich. Bei der ersten Dashboard-Prüfung waren noch keine Agents registriert. Die Einrichtung und Prüfbelege sind im [Laborjournal](docs/laborjournal.md) dokumentiert.
 
 ## Geplanter Vergleich
 
